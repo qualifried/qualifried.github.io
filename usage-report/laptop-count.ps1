@@ -37,8 +37,8 @@ foreach ($f in $files) {
     }
     if (-not $line.Contains('"type":"user"') -or $isSub) { continue }
     if ($line.Contains('"tool_use_id"')) {
-      if ($line.Contains('Request interrupted by user')) { Bump $key 'i' 1 }
-      if ($line.Contains('questions have been answered') -or $line.Contains('User has answered')) { Bump $key 'q' 1 }
+      if ($line -match '"(?:content|text)":"\[Request interrupted by user') { Bump $key 'i' 1 }
+      if ($line -match '"(?:content|text)":"(?:User has answered|Your questions have been answered)') { Bump $key 'q' 1 }
       continue
     }
     try { $o = $line | ConvertFrom-Json } catch { $nBad++; continue }
